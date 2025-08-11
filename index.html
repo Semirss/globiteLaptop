@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Globyte Laptop Design</title>
+    <!-- Use Tailwind CSS CDN for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #a2c0d2; /* Red background from the image */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        /* --- Updated Laptop Styles Based on the Provided Image --- */
+        .laptop-scene {
+            position: relative;
+            width: 80%; /* Reduced overall scale */
+            max-width: 1000px;
+            transform: scale(0.9); /* Subtle scale down */
+            transform-origin: center center;
+            filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.4));
+            z-index: 10;
+        }
+        
+        .laptop-display-frame {
+            position: relative;
+            /* --- BEZEL: Adjusted padding again for a balanced look --- */
+            padding: 1.25rem; 
+            background-color: #0d0d0d;
+            border-radius: 1.5rem 1.5rem 0.5rem 0.5rem;
+            aspect-ratio: 16 / 10;
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.8);
+            z-index: 10;
+        }
+        
+        .laptop-screen {
+            background-color: #fff;
+            width: 100%;
+            height: 100%;
+            border-radius: 1.25rem;
+            overflow: hidden;
+        }
+        
+        .laptop-notch {
+            position: absolute;
+            top: 0.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 45px;
+            height: 10px;
+            background-color: #000;
+            border-bottom-left-radius: 0.5rem;
+            border-bottom-right-radius: 0.5rem;
+            z-index: 20;
+        }
+
+        /* Redesigned laptop base to show only the edge */
+        .laptop-base {
+            width: 100%;
+            height: 1.5rem; /* Reduced height to be just the edge */
+            background-color: #2c2c2c;
+            border-radius: 0 0 0.5rem 0.5rem;
+            position: relative;
+            transform: translateY(-0.01rem);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), inset 0 2px 5px rgba(255, 255, 255, 0.05);
+            z-index: 5;
+        }
+
+        .table-stand {
+            position: absolute;
+            bottom: -15px; /* Positioned slightly below the base */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120%;
+            max-width: 1200px;
+            height: 15px;
+            background-color: #111;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            z-index: 1;
+        }
+        
+        /* Website Content Specific Styles */
+        .website-content {
+            display: flex;
+            height: 100%;
+        }
+        
+        .sidebar {
+            width: 35%;
+            background-color: #393d52;
+            color: white;
+            padding: 2rem; 
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .main-content {
+            flex-grow: 1;
+            background-color: #fff;
+            padding: 2rem; 
+            overflow-y: auto;
+        }
+        
+        /* New styles for the navigation buttons */
+        .nav-buttons {
+            display: flex;
+            gap: 0.5rem;
+            padding: 0.35rem;
+            background-color: #96b7b2;
+            border-radius: 9999px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 2rem;
+        }
+
+        .nav-button {
+            flex: 1;
+            padding: 0.4rem 0.5rem;
+            font-weight: 500;
+            border-radius: 9999px;
+            text-align: center;
+            transition: all 0.3s ease-in-out;
+            font-size: 0.8rem;
+            color: white;
+            cursor: pointer;
+        }
+        
+        .nav-button.active {
+            background-color: white;
+            color: #e84949;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        .sidebar h2 {
+            font-size: 1.5rem;
+        }
+
+        /* New Card and Animation styles from previous version */
+        .framer-card-clip-path {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%, 0 0);
+        }
+        .card-text-container {
+            border-radius: 1.5rem;
+        }
+        .card-image-container {
+            border-radius: 1.5rem;
+            overflow: hidden;
+            position: relative;
+        }
+        .smooth-scroll {
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
+        }
+        .card-image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 50%);
+        }
+        @keyframes fadeInSlideUp {
+            from { opacity: 0; transform: translateY(10px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes fadeInSlideDown {
+            from { opacity: 0; transform: translateY(-10px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .card {
+            opacity: 0;
+            transform: translateY(10px) scale(0.95);
+        }
+        .card.is-visible-down { animation: fadeInSlideUp 0.6s ease-out forwards; animation-delay: var(--animation-delay); }
+        .card.is-visible-up { animation: fadeInSlideDown 0.6s ease-out forwards; animation-delay: var(--animation-delay); }
+
+    </style>
+</head>
+<body>
+    
+    <div class="laptop-scene">
+        
+        <!-- Laptop display section with minimal bezels -->
+        <div class="laptop-display-frame">
+            <div class="laptop-notch"></div>
+            <div class="laptop-screen">
+                <!-- Website content starts here -->
+                <div class="website-content">
+                    <!-- Left Sidebar -->
+                    <div class="sidebar">
+                        <div>
+                            <h1 class="text-xl font-bold mb-2">Globyte LLC</h1>
+                        </div>
+                        <div>
+                            <!-- Made h2 smaller and added a p tag below -->
+                            <h2 class="text-lg font-bold leading-tight">Driving Innovation. Powering Businesses.</h2>
+                            <p class="text-xs text-white opacity-75 mt-2 mb-8">Globyte LLC is a dedicated IT and business consulting firm committed to optimizing IT infrastructure, enhancing cybersecurity, streamlining operations, and driving sustainable growth with a comprehensive suite of services.</p>
+                            
+                            <!-- Updated button navigation -->
+                            <div class="nav-buttons">
+                                <button id="expertise-btn" class="nav-button">Expertise</button>
+                                <button id="about-btn" class="nav-button">About</button>
+                                <button id="team-btn" class="nav-button">Team</button>
+                                <button id="contact-btn" class="nav-button">Contact</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Content Area -->
+                    <div class="main-content">
+                        
+                        <!-- Dynamic title based on active button -->
+                        <h2 id="main-content-title" class="text-lg font-bold mb-4 sticky top-0 bg-white pt-2 pb-1 z-20">Our Expertise</h2>
+
+                        <!-- Cards container will be populated by JavaScript -->
+                        <div id="cards-container" class="space-y-4">
+                            <!-- Cards will be dynamically added here -->
+                        </div>
+                    </div>
+                </div>
+                <!-- Website content ends here -->
+            </div>
+        </div>
+        
+        <!-- Laptop base and keyboard area -->
+        <div class="laptop-base"></div>
+        <div class="table-stand"></div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Card Data ---
+            const exploreData = [
+                {
+                    title: "IT Strategy & Planning",
+                    description: "Collaborate with clients to design a strategic technology roadmap that aligns with business goals, enabling digital transformation and long-term success.",
+                    tags: ["strategy", "planning"],
+                    imageSrc: "https://placehold.co/600x400/38bdf8/white?text=IT+Strategy",
+                    url: "globyte.com/strategy"
+                },
+                {
+                    title: "Systems Integration",
+                    description: "Facilitate the seamless integration of software, hardware, and network systems to streamline workflows, reduce operational costs, and boost efficiency.",
+                    tags: ["integration", "systems"],
+                    imageSrc: "https://placehold.co/600x400/22c55e/white?text=Integration",
+                    url: "globyte.com/integration"
+                },
+                {
+                    title: "Cybersecurity Services",
+                    description: "Conduct comprehensive risk assessments and implement robust security measures to safeguard client data and systems. This includes threat monitoring, vulnerability management, and incident response.",
+                    tags: ["cybersecurity", "security"],
+                    imageSrc: "https://placehold.co/600x400/ef4444/white?text=Cybersecurity",
+                    url: "globyte.com/cybersecurity"
+                },
+                {
+                    title: "Cloud Computing Solutions",
+                    description: "Enable efficient cloud migration and manage infrastructure across major platforms like AWS, Azure, and Google Cloud to optimize scalability and cost-effectiveness.",
+                    tags: ["cloud", "migration"],
+                    imageSrc: "https://placehold.co/600x400/f59e0b/white?text=Cloud",
+                    url: "globyte.com/cloud"
+                },
+                {
+                    title: "Managed IT Services",
+                    description: "Provide proactive network monitoring, end-to-end system maintenance, and around-the-clock helpdesk support to ensure continuous business operations.",
+                    tags: ["managed services", "support"],
+                    imageSrc: "https://placehold.co/600x400/3b82f6/white?text=Managed+IT",
+                    url: "globyte.com/managed"
+                },
+                {
+                    title: "Software Development & Customization",
+                    description: "Design and develop customized applications tailored to meet each client's unique business challenges, goals, and operational requirements.",
+                    tags: ["software", "customization"],
+                    imageSrc: "https://placehold.co/600x400/8b5cf6/white?text=Software",
+                    url: "globyte.com/software"
+                },
+                {
+                    title: "IT Support & Troubleshooting",
+                    description: "Deliver fast and reliable technical support for hardware, software, and network issues to reduce downtime and keep business running smoothly.",
+                    tags: ["support", "troubleshooting"],
+                    imageSrc: "https://placehold.co/600x400/e84949/white?text=IT+Support",
+                    url: "globyte.com/support"
+                },
+                {
+                    title: "Data Management & Analytics",
+                    description: "Implement secure data storage, reliable backup systems, and advanced analytics tools to protect valuable information and drive business insights.",
+                    tags: ["data", "analytics"],
+                    imageSrc: "https://placehold.co/600x400/2dd4bf/white?text=Data",
+                    url: "globyte.com/data"
+                },
+                {
+                    title: "IT Training & Change Management",
+                    description: "Offer comprehensive staff training and hands-on guidance during technology transitions to ensure smooth system adoption and minimal disruption.",
+                    tags: ["training", "change management"],
+                    imageSrc: "https://placehold.co/600x400/e5e7eb/black?text=Training",
+                    url: "globyte.com/training"
+                },
+                {
+                    title: "Consulting on Emerging Technologies",
+                    description: "Provide expert guidance on harnessing emerging technologies like AI, IoT, and blockchain to drive innovation and sustainable growth.",
+                    tags: ["consulting", "emerging tech"],
+                    imageSrc: "https://placehold.co/600x400/6b7280/white?text=Emerging+Tech",
+                    url: "globyte.com/emerging"
+                },
+                {
+                    title: "Machine Learning & AI Integration",
+                    description: "Develop and implement tailored AI solutions and machine learning models to automate tasks, improve decisions, and generate new business value.",
+                    tags: ["AI", "machine learning"],
+                    imageSrc: "https://placehold.co/600x400/8b5cf6/white?text=AI+ML",
+                    url: "globyte.com/ai"
+                },
+                {
+                    title: "Business Consulting",
+                    description: "Apply Lean Six Sigma principles to streamline workflows, reduce waste, and enhance productivity by standardizing and documenting processes.",
+                    tags: ["business", "consulting"],
+                    imageSrc: "https://placehold.co/600x400/f59e0b/white?text=Consulting",
+                    url: "globyte.com/business"
+                }
+            ];
+            const aboutData = [
+                {
+                    title: "About Globyte LLC",
+                    description: "Globyte LLC delivers innovative IT and business consulting solutions through a collaborative team of cloud-certified architects, UI/UX designers, full-stack developers, and strategic partners. Supported by a dynamic pipeline of interns and specialized external consultants, Globyte empowers organizations to solve complex challenges and drive sustainable growth.",
+                    tags: ["about", "team", "growth"],
+                    imageSrc: "https://placehold.co/600x400/3b82f6/white?text=Globyte+LLC",
+                    url: "globyte.com/about"
+                }
+            ];
+            const teamData = [
+                {
+                    title: "Hiruy Hailu",
+                    description: "Principal Architect & Data Solutions Lead. Highly accomplished Project Lead and Architect with over 15 years of experience in designing and implementing comprehensive data solutions.",
+                    tags: ["architect", "data solutions"],
+                    imageSrc: "https://placehold.co/600x400/3b82f6/white?text=Hiruy+Hailu",
+                    url: "linkedin.com/in/hiruyhailu"
+                },
+                {
+                    title: "Ablante Legesse",
+                    description: "Co-Team Lead. Dynamic Technical Leader and Data & AI Strategist with over 18 years of experience guiding Fortune 100 companies through major data transformations.",
+                    tags: ["team lead", "AI strategist"],
+                    imageSrc: "https://placehold.co/600x400/22c55e/white?text=Ablante+Legesse",
+                    url: "linkedin.com/in/ablantelegesse"
+                },
+                {
+                    title: "Alex Belay",
+                    description: "Business Process Optimization Lead. Process Improvement Expert, Alex specializes in analyzing and optimizing business processes to enhance efficiency, reduce costs, and improve performance.",
+                    tags: ["process optimization", "business"],
+                    imageSrc: "https://placehold.co/600x400/f59e0b/white?text=Alex+Belay",
+                    url: "linkedin.com/in/alexbelay"
+                },
+                {
+                    title: "Michael Alemu",
+                    description: "Tech Lead. Microsoft Shop Guru, Michael brings over 10 years of expertise in Microsoft SQL, Microsoft Azure Cloud, Azure Databricks, Data Analytics, Business Intelligence, and more.",
+                    tags: ["tech lead", "azure"],
+                    imageSrc: "https://placehold.co/600x400/8b5cf6/white?text=Michael+Alemu",
+                    url: "linkedin.com/in/michaelalemu"
+                },
+                {
+                    title: "Befkadu Gebru",
+                    description: "Co-Tech Lead. Seasoned Cloud Engineer, Database Administrator, and DevOps Leader with over 15 years of hands-on and strategic experience driving infrastructure modernization.",
+                    tags: ["cloud engineer", "devops"],
+                    imageSrc: "https://placehold.co/600x400/e84949/white?text=Befkadu+Gebru",
+                    url: "linkedin.com/in/befkadugebru"
+                },
+                {
+                    title: "Interns",
+                    description: "Frontend & Backend Web Development. Our entry-level contributors are trained in web development, supporting project delivery and growing into future full-time roles under the mentorship of senior team members.",
+                    tags: ["interns", "web development"],
+                    imageSrc: "https://placehold.co/600x400/e5e7eb/black?text=Interns",
+                    url: "globyte.com/interns"
+                }
+            ];
+            const contactData = [
+                {
+                    title: "Contact Us",
+                    description: "Ready to transform your business with innovative IT and business solutions? Fill out the form below or reach out directly.",
+                    tags: ["contact"],
+                    url: "mailto:info@globyte.com",
+                    imageSrc: "https://placehold.co/600x400/6b7280/white?text=Contact+Us"
+                }
+            ];
+
+            // --- Function to render cards dynamically ---
+            const renderCards = (data) => {
+                const container = document.getElementById('cards-container');
+                if (!container) return; // Prevent errors if container isn't found
+                container.innerHTML = ''; // Clear existing cards
+                const fragment = document.createDocumentFragment();
+
+                data.forEach((item, index) => {
+                    const card = document.createElement('div');
+                    card.classList.add('card', 'bg-white', 'p-3', 'rounded-xl', 'shadow-lg', 'flex', 'flex-col', 'md:flex-row', 'items-center', 'space-y-2', 'md:space-y-0', 'md:space-x-4', 'framer-card-clip-path');
+                    card.style.setProperty('--animation-delay', `${index * 0.1}s`);
+
+                    card.innerHTML = `
+                        <div class="flex-1 card-text-container p-3">
+                            <h3 class="text-md md:text-xl font-bold mb-1">${item.title}</h3>
+                            <p class="text-gray-600 mb-2 text-xs md:text-sm">${item.description}</p>
+                            <div class="flex items-center space-x-1.5">
+                                <button class="bg-red-500 text-white text-xs font-medium px-2 py-1 rounded-full hover:opacity-80 transition-opacity">be heard</button>
+                                <div class="bg-gray-200 text-gray-700 text-xs font-medium px-1.5 py-0.5 rounded-full flex items-center space-x-0.5">
+                                    <span>impact score ></span>
+                                    <span class="font-bold">US</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-full md:w-1/3 relative card-image-container">
+                            <img src="${item.imageSrc}" alt="${item.title} image" class="object-cover w-full h-full rounded-xl">
+                            <div class="card-image-overlay"></div>
+                            <div class="absolute bottom-2 left-2 right-2 flex items-center justify-between z-10">
+                                <span class="bg-white/80 backdrop-blur-sm text-gray-800 text-xs font-medium px-1.5 py-0.5 rounded-full">${item.url}</span>
+                                <button class="bg-white text-gray-800 p-1 rounded-full shadow-md">
+                                    <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    fragment.appendChild(card);
+                });
+                container.appendChild(fragment);
+
+                // Re-initialize the Intersection Observer for the newly added cards
+                setupIntersectionObserver();
+            };
+            
+            // --- New logic for button activation and content switching ---
+            const activateButtonAndRenderContent = (buttonId, titleText, data) => {
+                // Remove 'active' class from all buttons
+                document.querySelectorAll('.nav-button').forEach(btn => btn.classList.remove('active'));
+
+                // Add 'active' class to the clicked button
+                const activeButton = document.getElementById(buttonId);
+                if (activeButton) {
+                    activeButton.classList.add('active');
+                }
+
+                // Update the main content title
+                const mainContentTitle = document.getElementById('main-content-title');
+                if (mainContentTitle) {
+                    mainContentTitle.textContent = titleText;
+                }
+
+                // Render the new set of cards
+                renderCards(data);
+            };
+
+            // Event listeners for the new navigation buttons
+            document.getElementById('expertise-btn').addEventListener('click', () => {
+                activateButtonAndRenderContent('expertise-btn', 'Our Expertise', exploreData);
+            });
+            document.getElementById('about-btn').addEventListener('click', () => {
+                activateButtonAndRenderContent('about-btn', 'About Globyte IT & Business Consulting', aboutData);
+            });
+            document.getElementById('team-btn').addEventListener('click', () => {
+                activateButtonAndRenderContent('team-btn', 'Our Team', teamData);
+            });
+            document.getElementById('contact-btn').addEventListener('click', () => {
+                activateButtonAndRenderContent('contact-btn', 'Contact Us', contactData);
+            });
+
+            // --- Intersection Observer logic for the scroll animation ---
+            let lastScrollY = 0;
+
+            const setupIntersectionObserver = () => {
+                const cards = document.querySelectorAll('.card');
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            if (document.querySelector('.main-content').scrollTop > lastScrollY) {
+                                // Scrolling down, animate from bottom
+                                entry.target.classList.add('is-visible-down');
+                                entry.target.classList.remove('is-visible-up');
+                            } else {
+                                // Scrolling up, animate from top
+                                entry.target.classList.add('is-visible-up');
+                                entry.target.classList.remove('is-visible-down');
+                            }
+                        } else {
+                            // When the element leaves the viewport, remove the animation classes
+                            entry.target.classList.remove('is-visible-down');
+                            entry.target.classList.remove('is-visible-up');
+                        }
+                    });
+                    lastScrollY = document.querySelector('.main-content').scrollTop;
+                }, {
+                    threshold: 0.1, // Trigger when 10% of the item is visible
+                    root: document.querySelector('.main-content')
+                });
+
+                cards.forEach(card => {
+                    observer.observe(card);
+                });
+            };
+            
+            // Initial setup call for the default state
+            activateButtonAndRenderContent('expertise-btn', 'Our Expertise', exploreData);
+        });
+    </script>
+</body>
+</html>
