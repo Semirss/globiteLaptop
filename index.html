@@ -49,17 +49,49 @@
             overflow: hidden;
         }
         
+        /* --- UPDATED: Redesigned the notch to contain the camera elements --- */
         .laptop-notch {
             position: absolute;
-            top: 0.5rem;
+            /* New positioning for a more central, prominent look */
+            top: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 45px;
-            height: 10px;
-            background-color: #000;
-            border-bottom-left-radius: 0.5rem;
-            border-bottom-right-radius: 0.5rem;
+            width: 100px; /* A more pronounced width */
+            height: 25px; /* A more pronounced height */
+            background-color: #0d0d0d;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
             z-index: 20;
+            display: flex; /* Use flexbox to center the camera */
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5); /* Add a subtle drop shadow */
+        }
+
+        /* --- NEW: Camera and sensor styles --- */
+        .camera-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px; /* Space between the camera and sensor */
+        }
+        
+        .camera-lens {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 4px 4px, #e3f2fd 10%, #313131 50%, #000000 100%);
+            box-shadow: inset 0 0 2px rgba(255, 255, 255, 0.3), 0 0 2px rgba(0, 0, 0, 0.5);
+            border: 1px solid #111;
+        }
+
+        .camera-sensor {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background-color: #ff3b30; /* A red status light */
+            box-shadow: 0 0 2px 1px #ff3b30;
         }
 
         /* Redesigned laptop base to show only the edge */
@@ -97,7 +129,7 @@
             width: 35%;
             background-color: #393d52;
             color: white;
-            padding: 2rem; 
+            padding: 1.5rem; 
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -113,7 +145,7 @@
         /* New styles for the navigation buttons */
         .nav-buttons {
             display: flex;
-            gap: 0.5rem;
+            gap: 0.3rem;
             padding: 0.35rem;
             background-color: #96b7b2;
             border-radius: 9999px;
@@ -135,7 +167,7 @@
         
         .nav-button.active {
             background-color: white;
-            color: #e84949;
+            color:#393d52;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
         }
 
@@ -191,7 +223,13 @@
         
         <!-- Laptop display section with minimal bezels -->
         <div class="laptop-display-frame">
-            <div class="laptop-notch"></div>
+            <!-- UPDATED: Added a camera and sensor inside the notch -->
+            <div class="laptop-notch">
+                <div class="camera-container">
+                    <div class="camera-lens"></div>
+                    <div class="camera-sensor"></div>
+                </div>
+            </div>
             <div class="laptop-screen">
                 <!-- Website content starts here -->
                 <div class="website-content">
